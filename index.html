@@ -1,7 +1,66 @@
+
+
 <html>
- <head>
- </head>
- <body>
-   <h1>Hello World<h1>
- </body>
+	<script type="text/javascript">
+		const shuffleArray = array => {
+		  for (let i = array.length - 1; i > 0; i--) {
+		    const j = Math.floor(Math.random() * (i + 1));
+		    const temp = array[i];
+		    array[i] = array[j];
+		    array[j] = temp;
+		  }
+		}
+		
+		function parseTasks(input) {
+		  return [...input.matchAll("(DELTA-[0-9]+)(.+)")].map(x => [x[1], x[2]])
+		}
+		
+		function formatTasks(textbox) {
+		  let tasks = parseTasks(textbox.value);
+		  textbox.value = tasks.reduce((cV, pV) => cV + pV[0] + " " + pV[1] + "\n", "");
+		}
+		
+		function shuffle() {
+		  let tasksBox = document.getElementById("tasks");
+		  let tasks = parseTasks(tasksBox.value);
+		
+		  let peopleBox = document.getElementById("people");
+		  let people = peopleBox.value.split("\n");
+		  shuffleArray(people);
+		
+		  let humanIdx = 0;
+		  let output = "";
+		  for (const task of tasks) {
+		    output += task[0] + task[1] + " - " + people[humanIdx] + "\n";
+		    humanIdx += 1;
+		    if (humanIdx > people.length - 1) {
+		      humanIdx = 0;
+		    }
+		  }
+		
+		  let outputBox = document.getElementById("output");
+		  outputBox.value = output;
+		}
+	</script>
+	<head>
+	</head>
+	<body>
+		<div style="width: 100%; display: flex; justify-content: center;">
+			<div style="text-align: center;">
+				<table>
+					<tr>
+						<th>Tasks</th>
+						<th>People</th>
+						<th>Output</th>
+					</tr>
+					<tr>
+						<td><textarea style="resize: none;" rows="15" cols="100" id="tasks" onchange="formatTasks(this)"></textarea></td>
+						<td><textarea style="resize: none;" rows="15" cols="20" id="people">Анатолий&#10;Андрей&#10;Владислав&#10;Константин&#10;Марк&#10;Роман&#10;Сергей</textarea></td>
+						<td><textarea readonly style="resize: none;" rows="15" cols="100" id="output"></textarea></td>
+					</tr>
+				</table>
+				<button style="clear: both;" type="button" id="shuffle" onclick="shuffle()">shuffle!</button> 
+			</div>
+		</div>
+	</body>
 </html>
