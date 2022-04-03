@@ -10,7 +10,7 @@
 		}
 		
 		function parseTasks(input) {
-		  return [...input.matchAll("(DELTA-[0-9]+)(.+)")].map(x => [x[1], x[2]])
+		  return [...input.matchAll("(DELTA-[0-9]+)(.+)")].map(x => [x[1], x[2].trim()])
 		}
 		
 		function formatTasks(textbox) {
@@ -29,7 +29,7 @@
 		  let humanIdx = 0;
 		  let output = "";
 		  for (const task of tasks) {
-		    output += task[0] + task[1] + " - " + people[humanIdx] + "\n";
+		    output += task[0] + " " + task[1] + " - " + people[humanIdx] + "\n";
 		    humanIdx += 1;
 		    if (humanIdx > people.length - 1) {
 		      humanIdx = 0;
