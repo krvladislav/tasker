@@ -101,7 +101,13 @@
 
 		function loadParams() {
 			const urlParams = new URLSearchParams(window.location.search);
-			people = urlParams.getAll("people");
+			let p = [];
+			for (const key of urlParams.keys()) {
+				if (key.startsWith("people")) {
+					p.push(urlParams.get(key));
+				}
+			}
+			people = p;
 			taskPrefix = urlParams.get("prefix");
 		}
 		loadParams();
