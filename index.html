@@ -10,7 +10,21 @@
 		}
 		
 		function parseTasks(input) {
-		  return [...input.matchAll("(DELTA-[0-9]+)(.+)")].map(x => [x[1], x[2].trim()])
+		  input = input.replace(/\n/g, " ").replace(/\t/g, " ").replace(/Task/g, "").replace(/Bug/g, "");
+		  let tasksNumbers = [...input.matchAll("SEARCH-[0-9]+")];
+		  return tasksNumbers.map(function(value, index) {
+			  let taskNumber = value[0];
+			  let next = tasksNumbers[index+1];
+			  let startIndex = input.indexOf(taskNumber) + taskNumber.length;
+			  let endIndex = input.length;
+			  if (next != undefined) {
+			  	endIndex = input.indexOf(next);
+			  }
+			  return [taskNumber, input.substring(
+				  startIndex,
+				  endIndex
+			  ).trim()]
+		  })
 		}
 		
 		function formatTasks(textbox) {
@@ -43,23 +57,30 @@
 	<head>
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 	</head>
+	<style>
+		textarea {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		width: 100%;
+		resize: none;
+		}
+	</style>
 	<body>
-		<div style="width: 100%; display: flex; justify-content: center;">
-			<div style="text-align: center;">
-				<table>
-					<tr>
-						<th>Tasks</th>
-						<th>People</th>
-						<th>Output</th>
-					</tr>
-					<tr>
-						<td><textarea style="resize: none;" rows="15" cols="100" id="tasks" onchange="formatTasks(this)"></textarea></td>
-						<td><textarea style="resize: none;" rows="15" cols="20" id="people">Анатолий&#10;Андрей&#10;Владислав&#10;Константин&#10;Марк&#10;Роман&#10;Сергей</textarea></td>
-						<td><textarea readonly style="resize: none;" rows="15" cols="100" id="output"></textarea></td>
-					</tr>
-				</table>
-				<button style="clear: both;" type="button" id="shuffle" onclick="shuffle()">shuffle!</button> 
-			</div>
+		<div style="text-align: center;">
+			<table style="margin: auto;">
+				<tr>
+					<th>Tasks</th>
+					<th>People</th>
+					<th>Output</th>
+				</tr>
+				<tr>
+					<td><textarea cols="100" rows="15" id="tasks" onchange="formatTasks(this)"></textarea></td>
+					<td><textarea cols="20" rows="15" id="people">Анатолий&#10;Андрей&#10;Владислав&#10;Константин&#10;Марк&#10;Роман&#10;Сергей</textarea></td>
+					<td><textarea readonly cols="100" rows="15" id="output"></textarea></td>
+				</tr>
+			</table>
+			<button style="clear: both;" type="button" id="shuffle" onclick="shuffle()">shuffle!</button> 
 		</div>
 	</body>
 </html>
