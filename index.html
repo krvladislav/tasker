@@ -101,7 +101,7 @@
 
 		function loadParams() {
 			const urlParams = new URLSearchParams(window.location.search);
-			people = urlParams.getAll("people[]");
+			people = urlParams.getAll("people");
 			taskPrefix = urlParams.get("prefix");
 		}
 		loadParams();
